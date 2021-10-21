@@ -27,6 +27,13 @@ namespace livraria.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Produto>>> GetProdutos()
         {
+ 
+            return await _context.TodoProducts.ToListAsync();
+        }
+
+        [HttpPost]
+        public ActionResult InsertProdutos()
+        {
             _context.TodoProducts.Add(new Produto { ID = "1", Nome = "Book1", Preco = 24.0, Quant = 1, Categoria = "Acao", Img = "img1" });
             _context.TodoProducts.Add(new Produto { ID = "2", Nome = "Book2", Preco = 30.0, Quant = 3, Categoria = "Acao", Img = "img2" });
             _context.TodoProducts.Add(new Produto { ID = "3", Nome = "Book3", Preco = 4.0, Quant = 10, Categoria = "Acao", Img = "img3" });
@@ -35,8 +42,7 @@ namespace livraria.Controllers
 
 
             _context.SaveChanges();
-
-            return await _context.TodoProducts.ToListAsync();
+            return Ok();
         }
 
         [HttpGet("{id}")]
@@ -52,8 +58,8 @@ namespace livraria.Controllers
             return item;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Produto>> PostProduto( Produto produto)
+        [HttpPost("Insert")]
+        public async Task<ActionResult<Produto>> PostProduto([FromBody] Produto produto)
         {
             _context.TodoProducts.Add(produto);
             await _context.SaveChangesAsync();
