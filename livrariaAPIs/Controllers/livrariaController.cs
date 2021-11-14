@@ -67,5 +67,53 @@ namespace livraria.Controllers
             return CreatedAtAction(nameof(GetProdutos), new { id = produto.ID }, produto);
         }
 
+        [HttpPut]
+        public async Task<ActionResult<Produto>> PutProduto([FromBody] Produto produto)
+        {
+            try
+            {
+                var produtoDomain = _context.TodoProducts.Where(x => x.ID == produto.ID).FirstOrDefault();
+                if (produtoDomain == null)
+                    return NotFound("Produto não encontrado");
+
+                produtoDomain.Categoria = produto.Categoria;
+                produtoDomain.Img = produto.Img;
+                produtoDomain.Nome = produto.Nome;
+                produtoDomain.Preco = produto.Preco;
+                produtoDomain.Quant = produto.Quant;
+                _context.TodoProducts.Update(produtoDomain);
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult<Produto>> DeleteProduto([FromBody] Produto produto)
+        {
+            try
+            {
+                var produtoDomain = _context.TodoProducts.Where(x => x.ID == produto.ID).FirstOrDefault();
+                if (produtoDomain == null)
+                    return NotFound("Produto não encontrado");
+
+                
+                _context.TodoProducts.Remove(produtoDomain);
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
     }
 }

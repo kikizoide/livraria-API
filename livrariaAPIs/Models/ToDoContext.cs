@@ -1,5 +1,6 @@
 ﻿// Context do banco de dados
 
+using livrariaAPIs.Classes;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,7 @@ namespace livrariaAPIs.Models
 
         // Consultas e alterações no banco de dados (dentro de Produtos)
         public DbSet<Produto> TodoProducts { get; set; }
+        public DbSet<Fornecedor> TodoFornecedor { get; set; }
     }
+
 }
